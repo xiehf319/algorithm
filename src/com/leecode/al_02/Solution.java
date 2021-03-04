@@ -13,8 +13,12 @@ public class Solution {
     public static void main(String[] args) {
         Solution solution = new Solution();
 
-        ListNode first = new ListNode(2, new ListNode(4, new ListNode(3, null)));
-        ListNode second = new ListNode(5, new ListNode(6, new ListNode(4, null)));
+        ListNode first =
+//                new ListNode(2, new ListNode(4, new ListNode(3, null)));
+                new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, null)))))));
+        ListNode second =
+//                new ListNode(5, new ListNode(6, new ListNode(4, null)));
+                new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, null))));
 
         ListNode listNode = solution.addTwoNumbers(first, second);
         System.out.print(listNode.val + ",");
@@ -25,13 +29,28 @@ public class Solution {
     }
 
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        if (l1 == null) {
-            return new ListNode(l2.val, l2.next);
+        return getNode(l1, l2, false);
+    }
+
+    private ListNode getNode(ListNode l1, ListNode l2, boolean more) {
+        if (l2 == null && l1 == null && more) {
+            return new ListNode(1, null);
         }
         if (l2 == null) {
-            return new ListNode(l1.val, l1.next);
+            if (more) {
+                return getNode(l1, new ListNode(1, null), false);
+            } else {
+                return l1;
+            }
+        } else if (l1 == null) {
+            if (more) {
+                return getNode(new ListNode(1, null), l2, false);
+            } else {
+                return l2;
+            }
         }
-        return null;
+        int i = l1.val + l2.val + (more ? 1 : 0);
+        return new ListNode(i % 10, getNode(l1.next, l2.next, i >= 10));
     }
 }
 
